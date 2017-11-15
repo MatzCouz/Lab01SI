@@ -1,0 +1,113 @@
+
+<html ng-app="webMusicas">
+	<head>
+		<link rel="shortcut icon" href="css/unnamed.png.ico" type="image/x-icon" />
+		<title> Laboratorio de SI </title>
+		<script src="lib/angular.min.js"></script>
+		<script src="lib/angularTeste.js"></script>
+		<link rel="stylesheet" type="text/css" href="lib/bootStrap.css">
+		<link rel="stylesheet" type="text/css" href="lib/cssFile.css">
+	</head>
+	<body ng-controller="webMusicasController" background-color="Black">
+	 
+		<div class="jumbotron">
+		 <form ng-submit="adicionarArtista(novoArtista)" align="center">
+		 		<input type="text" align="center" ng-model="novoArtista.nome" placeholder="Nome">
+		 		<input type="text" ng-model="novoArtista.foto" placeholder="Link">
+		 		<button type="submit" class="btn btn-primary btn-block" ng-disabled="!novoArtista.nome">Adicionar artista</button>
+		 </form>
+		</div>
+		<div class="jumbotron">
+		 <form ng-submit="adicionarMusica(novaMusica)" align="center">
+		 		<input type="text" ng-model="novaMusica.nome" placeholder="Nome da musica">
+		 		<input type="text" ng-model="novaMusica.album" placeholder="Album">
+		 		<input type="text" ng-model="novaMusica.artista" placeholder="Artista">
+		 		<input type="year" ng-model="novaMusica.anoLancamento" placeholder="Ano de lancamento">
+		 		<input type="text" ng-model="novaMusica.duracao" placeholder="Duracao">
+		 		<button type="submit" class="btn btn-primary btn-block" ng-disabled="!novaMusica.nome || !novaMusica.artista || !novaMusica.album || !novaMusica.duracao || !novaMusica.anoLancamento"">Adicionar musica</button>
+			 </form>
+		</div>
+		<div class="jumbotron">
+		 	<form ng-submit="adicionarPlaylist(nomePlaylist)" align="center">
+		 		<input type="text" ng-model="nomePlaylist" placeholder="Nome da playlist">
+		 		<button type="submit" class="btn btn-primary btn-block" ng-disabled="!nomePlaylist">Adicionar playlist</button>
+		 	</form>
+		</div>
+		<div class="jumbotron" align="center">
+		 <form ng-submit="listarAlbums(nomeArtista)">
+		 	<input type="text" ng-model="nomeArtista" placeholder="Nome do artista">
+		 	<button type="submit" class="btn btn-primary btn-block" ng-disabled="!nomeArtista">Pesquisar artista</button>
+		 </form>
+		</div>
+		<p ng-if="openArtistas" class="jumbotron">
+		 	<table class="table table-striped">
+		 		<tr ng-repeat="artista in artistas | filter: nomeArtista">
+		 			<td ng-click="listarAlbums(artista.nome)">{{artista.nome}} <img src="{{artista.foto}}" height="50" width="50" /></td>
+		 		</tr>
+		 	</table>
+		 		<table class="table table-striped">
+		 			<tr ng-repeat="album in albums" ng-show="album.artista == openAlbum" >
+		 				<td> {{album.nome}}</td>
+		 			</tr>
+		 		</table>
+		 	</p>
+
+		 <div class="jumbotron">
+		 	<label> <b>Playlists</b></label>
+		 	<div ng-repeat="playlist in playlists">
+		 		<div ng-click="exibirMusicasPlaylists(playlist.nome)">{{playlist.nome}}</div>
+		 		<button ng-click="removerPlaylist(playlist)" class="btn btn-dark">excluir</button>
+		 	</div>
+		 </div>
+		 <p ng-if="exibirMusica">
+		 		<div ng-repeat="playlist in playlists" ng-show="playlist.nome == musicasPlaylist">
+		 			<div ng-repeat="musica in playlist.musicas">
+		 				<div>{{musica.nome}}</div>
+		 				<button class="btn btn-dark" ng-click="removerMusicaPlaylist(musica, playlist)" title="excluir musica">excluir</button>
+		 			</div>
+		 		</div>		 
+		 </p>
+		 <div class="jumbotron">
+		 <table>
+		 	<label><b> Albums </b> </label>
+		 	<tr ng-repeat="album in albums">
+		 		<td>{{album.nome}}</td>
+		 	</tr>
+		 </table>
+		</div>
+		 <div class="jumbotron">
+		 	<label> <b>Musicas</b> </label>
+		 	<div ng-repeat="musica in musicas">
+		 		<div ng-click="exibirPlaylists(musica)">{{musica.nome}} {{musica.artista}}</div>
+		 		<button class="btn btn-dark" ng-click="removerMusica(musica)">excluir musica</button>
+		 	</div>
+		 </div>
+
+		 <p ng-if="exibirPlaylist" class="jumbotron">
+		 	<label><b>Lista de playlists para adicionar</b></label>
+		 		<table>
+		 			<tr ng-repeat="playlist in playlists">
+		 				<td ng-click="adicionarNaPlaylist(musicaAddPlaylist, playlist)">{{playlist.nome}}</td>
+		 			</tr>
+		 		</table>
+		 </p>	
+		 <div class="jumbotron">
+		 <table class="table table-striped">
+		 	<label><b>Artistas</b> </label>
+		 	<tr ng-repeat="artista in artistas">
+		 		<td ng-click="adicionarArtistaFavorito(artista.nome)">{{artista.nome}}</td>
+		 		<td><img src="{{artista.foto}}" height="60" width="60" /></td>
+		 	</tr>
+		 </table>
+		</div>
+		 <div class="jumbotron">
+		 	<label> <b>Artistas preferidos</b> </label>
+		 	<div ng-repeat="artista in artistas" ng-show="artista.favorito == true">
+		 		<p> {{artista.nome}}       <img src="{{artista.foto}}" height="60" width="60" /></p>
+		 		<button class="btn btn-dark" ng-click="removerArtistaFavorito(artista.nome)" title="excluir">excluir</button>
+		 	<div>
+		 </div>
+	
+	</body>
+
+</html>
